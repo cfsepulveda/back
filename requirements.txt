@@ -1,3 +1,5 @@
 djangorestframework
+markdown
+django-filter
 Django
 wily
