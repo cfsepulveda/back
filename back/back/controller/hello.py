@@ -1,20 +1,13 @@
-import click
+import json
+from pathlib import Path
+
+from back.services.wily_service import generate_report
+from back.serializer.wily_serializer import WilySerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from wily.__main__ import cli, report;
-from wily.config import load as load_config
+from wily.helper.custom_enums import ReportFormat
 
 
 @api_view(['GET'])
 def hello_world(request):
-
-    #cli()
-    report('cfsm')
-
-    fruits = ["apple", "banana", "cherry"]
-    for x in fruits:
-        print(x)
-    for x in fruits:
-        print(x)
-    return Response({"message": "Hello, Apple!"})
-
+    return Response(WilySerializer(generate_report(), many=True).data)
