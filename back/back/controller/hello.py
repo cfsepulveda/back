@@ -10,4 +10,5 @@ from wily.helper.custom_enums import ReportFormat
 
 @api_view(['GET'])
 def hello_world(request):
+    print("req ",request.query_params)
     return Response(WilySerializer(generate_report(), many=True).data)
