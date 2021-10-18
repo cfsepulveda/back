@@ -5,6 +5,7 @@ from back.dto.wili_dto import WilyDto
 from wily.cache import get_default_metrics
 from wily.commands.report import report
 from wily.commands.build import build as build_wily
+from wily.cache import clean
 
 from wily.archivers import resolve_archiver
 from wily.operators import resolve_operators
@@ -64,6 +65,7 @@ def getPaths():
     return paths
 
 def build(config):
+    clean(config)
     build_wily(
         config=config,
         archiver=resolve_archiver(config.archiver),
