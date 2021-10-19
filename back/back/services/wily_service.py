@@ -18,7 +18,7 @@ def generate_report():
     json = []
     for path in getPaths():
         config: WilyConfig = setWilyConfig(path)
-        build(config)
+        #build(config)
         file = str(path).split('\\')
         file_name = file[len(file)-1]
         json.append(call_report(config, file_name))
@@ -65,6 +65,7 @@ def getPaths():
     return paths
 
 def build(config):
+    print(config)
     clean(config)
     build_wily(
         config=config,
