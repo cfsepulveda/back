@@ -44,7 +44,6 @@ def call_report(config, file_name: str):
 
 
 def buildWilyDto(data, file_name):
-    print ("data ",data)
     for element in data:
         wilyDto = WilyDto(
             file_name, element[4], element[5], element[6], element[7])
@@ -57,8 +56,6 @@ def getPaths():
     print(absolute_path)
     for root, dirs, files in os.walk("/Users/adrianabonilla/Documents/andes/back/code_to_analyze"):
         for file in files:
-            print ("file" + file)
             if file.endswith(".py"):
-                print ("path"+root)
                 paths.append(os.path.join(root, file))
     return paths
