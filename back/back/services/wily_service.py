@@ -22,12 +22,36 @@ def generate_report():
         file = str(path).split('\\')
         file_name = file[len(file)-1]
         json.append(call_report(config, file_name))
+    return json
+
 
 def setWilyConfig(path: str):
     config: WilyConfig = load_config()
     full_path = os.path.dirname(path)
     config.path = str(Path(full_path))
     return config
+
+
+def call_report(config, file_name: str):
+    new_output = Path().cwd()
+    data = report(
+        config=config,
+        path=file_name,
+        metrics=get_default_metrics(config),
+        n=100,
+        output=new_output,
+        include_message=True,
+        format=ReportFormat.CONSOLE,
+        console_format=None,
+    )
+    return buildWilyDto(data, file_name)
+
+
+def buildWilyDto(data, file_name):
+    for element in data:
+        wilyDto = WilyDto(
+            file_name, element[4], element[5], element[6], element[7])
+    return wilyDto
 
 
 def getPaths():
