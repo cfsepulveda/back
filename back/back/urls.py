@@ -1,8 +1,9 @@
 from django.conf.urls import url
 
-from back.controller.hello import hello_world
-from back.controller.hello import cohesion_analisys
+from back.controller.wily_controller import cohesion_analisys
+from back.controller.wily_controller import complexity
+
 urlpatterns = [
-    url(r'^hello/$', hello_world),
-    url(r'^cohesion/$', cohesion_analisys)
+        url(r'^complexity/$', complexity),
+        url(r'^cohesion/$', cohesion_analisys)
 ]

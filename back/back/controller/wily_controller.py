@@ -9,10 +9,8 @@ from wily.helper.custom_enums import ReportFormat
 from back.services.cohesion_service import generate_report_cohesion
 from back.serializer.cohesion_serializer import CohesionSerializer
 
-@api_view(['GET'])
-def hello_world(request):
-
-    #json_data = json.loads(request.body.decode("utf-8"))
+@api_view(['POST'])
+def complexity(request):
     return Response(WilySerializer(generate_report(), many=True).data)
 
 @api_view(['POST'])
