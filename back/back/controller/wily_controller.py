@@ -8,6 +8,6 @@ from rest_framework.response import Response
 from wily.helper.custom_enums import ReportFormat
 
 
-@api_view(['GET'])
-def hello_world(request):
+@api_view(['POST'])
+def complexity(request):
     return Response(WilySerializer(generate_report(), many=True).data)
