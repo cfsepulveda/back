@@ -16,7 +16,9 @@ from wily.helper.custom_enums import ReportFormat
 
 def generate_report():
     json = []
+    print("absolute_path,,,")
     for path in getPaths():
+        print("absolute_path"+path)
         config: WilyConfig = setWilyConfig(path)
         #build(config)
         file = str(path).split('\\')
@@ -58,7 +60,7 @@ def getPaths():
     paths = []
     absolute_path: str = str(Path().cwd().parent)+"\\code_to_analyze"
     print(absolute_path)
-    for root, dirs, files in os.walk(absolute_path):
+    for root, dirs, files in os.walk("/Users/adrianabonilla/Documents/andes/back/code_to_analyze"):
         for file in files:
             if file.endswith(".py"):
                 paths.append(os.path.join(root, file))
