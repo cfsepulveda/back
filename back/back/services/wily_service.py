@@ -4,10 +4,15 @@ from pathlib import Path
 from back.dto.wili_dto import WilyDto
 from wily.cache import get_default_metrics
 from wily.commands.report import report
+from wily.commands.build import build as build_wily
+from wily.cache import clean
+
+from wily.archivers import resolve_archiver
+from wily.operators import resolve_operators
+
 from wily.config import WilyConfig
 from wily.config import load as load_config
 from wily.helper.custom_enums import ReportFormat
-
 
 def generate_report():
     json = []
@@ -15,7 +20,8 @@ def generate_report():
     for path in getPaths():
         print("absolute_path"+path)
         config: WilyConfig = setWilyConfig(path)
-        file = str(path).split('code_to_analyze/')
+        #build(config)
+        file = str(path).split('\\')
         file_name = file[len(file)-1]
         json.append(call_report(config, file_name))
     return json
@@ -59,3 +65,12 @@ def getPaths():
             if file.endswith(".py"):
                 paths.append(os.path.join(root, file))
     return paths
+
+def build(config):
+    print(config)
+    clean(config)
+    build_wily(
+        config=config,
+        archiver=resolve_archiver(config.archiver),
+        operators=resolve_operators(config.operators),
+    )
