@@ -1,5 +1,7 @@
 djangorestframework
+django-cors-headers
 markdown
 django-filter
 Django
 wily
+cohesion
