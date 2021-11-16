@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from back.dto.cohesion_dto import CohesionDto
+from back.dto.cohesion_dto import CohesionResponse
 from back.dto.cohesion_dto import FunctionsDto
 from back.dto.cohesion_dto import Variables
 from back.dto.cohesion_dto import ClassDto
@@ -11,6 +12,7 @@ def print_module_structure(filename, module_structure, verbose=False):
 
     try:
         for class_name, class_structure in module_structure.items():
+
             class_output_string = "Class: {} ({}:{})".format(
                 class_name,
                 class_structure["lineno"],
@@ -70,7 +72,7 @@ def print_module_structure(filename, module_structure, verbose=False):
 
         return cohesionDto
     except Exception as inst:
-        cohesionDto = CohesionDto("Error al obtener formato de la  clase", None, None)
+        cohesionDto = CohesionDto("Error formato clase", None, None)
         return cohesionDto
 
 
@@ -101,12 +103,7 @@ class CohesionSerializer(serializers.Serializer):
     total =serializers.CharField(max_length=400)
     classtype=ClassSerializer(many=True)
 
-
-    def __init__(self, *args, **kwargs):
-        kwargs['many'] = kwargs.get('many', True)
-        super().__init__(*args, **kwargs)
+class CohesionResponseSerializer(serializers.Serializer):
+    cohedto = CohesionSerializer(many=True)
 
 
-class CohesionSerializerTest(serializers.ModelSerializer):
-        model = CohesionDto
-        fields =  '_all_'
