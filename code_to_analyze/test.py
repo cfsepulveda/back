@@ -1,18 +1,24 @@
-def hello_apple():
-    fruits = ["apple", "banana", "cherry"]
-    for x in fruits:
-        print(x)
+class ExampleClass1(object):
+    class_variable1 = 5
+    class_variable2 = 6
 
-    for x in "banana":
-        print(x)
+    def func1(self):
+        self.instance_variable = 6
 
-    i = 1
-    while i < 6:
-        print(i)
-        i += 1
+        def inner_func(b):
+            return b + 5
 
-    i = 1
-    while i < 6:
-        print(i)
-        i += 1
+        local_variable = self.class_variable1
 
+        return local_variable
+
+    def func2(self):
+        print(self.class_variable2)
+
+    @staticmethod
+    def func3(variable):
+        return variable + 7
+
+class ExampleClass2(object):
+    def func1(self):
+        self.instance_variable1 = 7

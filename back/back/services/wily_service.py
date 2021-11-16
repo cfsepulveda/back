@@ -4,18 +4,19 @@ from pathlib import Path
 from back.dto.wili_dto import WilyDto
 from wily.cache import get_default_metrics
 from wily.commands.report import report
+from wily.cache import clean
+
+
 from wily.config import WilyConfig
 from wily.config import load as load_config
 from wily.helper.custom_enums import ReportFormat
 
-
 def generate_report():
     json = []
-    print("absolute_path,,,")
     for path in getPaths():
-        print("absolute_path"+path)
         config: WilyConfig = setWilyConfig(path)
-        file = str(path).split('code_to_analyze/')
+        build(config)
+        file = str(path).split('\\')
         file_name = file[len(file)-1]
         json.append(call_report(config, file_name))
     return json
@@ -44,7 +45,6 @@ def call_report(config, file_name: str):
 
 
 def buildWilyDto(data, file_name):
-    print ("data ",data)
     for element in data:
         wilyDto = WilyDto(
             file_name, element[4], element[5], element[6], element[7])
@@ -54,11 +54,13 @@ def buildWilyDto(data, file_name):
 def getPaths():
     paths = []
     absolute_path: str = str(Path().cwd().parent)+"\\code_to_analyze"
-    print(absolute_path)
-    for root, dirs, files in os.walk("/Users/adrianabonilla/Documents/andes/back/code_to_analyze"):
+    for root, dirs, files in os.walk(absolute_path):
         for file in files:
-            print ("file" + file)
             if file.endswith(".py"):
-                print ("path"+root)
                 paths.append(os.path.join(root, file))
     return paths
+
+def build(config):
+    absolute_path: str = str(Path().cwd().parent)+"\\code_to_analyze"
+    clean(config)
+    os.system("cd " + absolute_path+" && wily build")
