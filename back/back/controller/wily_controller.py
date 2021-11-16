@@ -17,5 +17,5 @@ def complexity(request):
 def cohesion_analisys(request):
     body = json.loads(request.body.decode("utf-8"))
     url = body.get("route")
-    print(body.get("file"))
-    return Response(CohesionSerializer(generate_report_cohesion(body.get("file")+".py",url),    many=True).data)
+    cohesionList = generate_report_cohesion(".py",url)
+    return Response(CohesionSerializer(cohesionList,    many=True).data)

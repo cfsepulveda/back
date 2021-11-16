@@ -1,3 +1,5 @@
+import json
+from json import JSONEncoder
 class Variables(object):
   def __init__(self, name, status):
     self.name = name,
@@ -21,6 +23,16 @@ class CohesionDto(object):
     self.file_name = file_name
     self.classtype = classtype
     self.total = total
+
+  def toJSON(self):
+    return json.dumps(self, default=lambda o: o.__dict__,
+                      sort_keys=True, indent=4)
+
+class CohesionResponse(object):
+  def __init__(self,cohedto: CohesionDto):
+    self.cohedto = cohedto
+
+
 
 
 
