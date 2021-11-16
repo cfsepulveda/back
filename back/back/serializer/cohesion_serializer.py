@@ -72,7 +72,7 @@ def print_module_structure(filename, module_structure, verbose=False):
 
         return cohesionDto
     except Exception as inst:
-        cohesionDto = CohesionDto("Error formato clase", None, None)
+        cohesionDto = CohesionDto(filename+"- Sin análisis: Error en estructura del archivo", None, 0)
         return cohesionDto
 
 
