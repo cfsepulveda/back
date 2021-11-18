@@ -53,7 +53,8 @@ def buildWilyDto(data, file_name):
 
 def getPaths():
     paths = []
-    absolute_path: str = str(Path().cwd().parent)+"\\code_to_analyze"
+    absolute_path: str = str(Path().cwd().parent)+"/code_to_analyze"
+    print(absolute_path)
     for root, dirs, files in os.walk(absolute_path):
         for file in files:
             if file.endswith(".py"):
@@ -61,6 +62,7 @@ def getPaths():
     return paths
 
 def build(config):
-    absolute_path: str = str(Path().cwd().parent)+"\\code_to_analyze"
+    absolute_path: str = str(Path().cwd().parent)+"/code_to_analyze"
+    print(absolute_path)
     clean(config)
     os.system("cd " + absolute_path+" && wily build")
