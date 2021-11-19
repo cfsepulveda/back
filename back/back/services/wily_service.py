@@ -15,7 +15,7 @@ def generate_report():
     json = []
     for path in getPaths():
         config: WilyConfig = setWilyConfig(path)
-        build(config)
+        build(config,path)
         file = str(path).split('\\')
         file_name = file[len(file)-1]
         json.append(call_report(config, file_name))
@@ -53,16 +53,18 @@ def buildWilyDto(data, file_name):
 
 def getPaths():
     paths = []
-    absolute_path: str = str(Path().cwd().parent)+"/code_to_analyze"
+    absolute_path: str = str(Path().cwd().parent)+"\\code_to_analyze"
     print(absolute_path)
     for root, dirs, files in os.walk(absolute_path):
         for file in files:
             if file.endswith(".py"):
                 paths.append(os.path.join(root, file))
+                print(os.path.join(root, file))
     return paths
 
-def build(config):
-    absolute_path: str = str(Path().cwd().parent)+"/code_to_analyze"
-    print(absolute_path)
+def build(config, path):
+    print("path")
+    print(path)
+    print("path")
     clean(config)
-    os.system("cd " + absolute_path+" && wily build")
+    os.system("cd " + path+" && wily build")
