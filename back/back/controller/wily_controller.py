@@ -11,8 +11,6 @@ from back.serializer.cohesion_serializer import CohesionSerializer
 
 @api_view(['POST'])
 def complexity(request):
-    url: str
-    file: str
     body = json.loads(request.body.decode("utf-8"))
     url = body.get("route")
     file = body.get("file")
@@ -26,4 +24,4 @@ def cohesion_analisys(request):
     if not file:
         file = ""
     cohesionList = generate_report_cohesion(file+".py",url)
-    return Response(CohesionSerializer(cohesionList,    many=True).data)
+    return Response(CohesionSerializer(cohesionList, many=True).data)

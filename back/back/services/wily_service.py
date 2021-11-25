@@ -12,8 +12,8 @@ from wily.config import WilyConfig
 from wily.config import load as load_config
 from wily.helper.custom_enums import ReportFormat
 
-def generate_report(stsddd, scs ):
-    data = getSubfoldersAndFiles()
+def generate_report(url:str, file:str):
+    data = getSubfoldersAndFiles(url,file)
     json = []
     for index, path in enumerate(data):
         config: WilyConfig = None
@@ -24,14 +24,22 @@ def generate_report(stsddd, scs ):
 
 
 
-def getSubfoldersAndFiles():
+def getSubfoldersAndFiles(url:str, file:str):
     paths = []
-    absolute_path: str = str(Path().cwd().parent)+"/code_to_analyze"
-    for root, dirs, files in os.walk(absolute_path):
-        for file in files:
-            if file.endswith(".py"):
-                paths.append([root, file])
-    return paths
+    absolute_path:str
+    if url:
+        absolute_path = str(Path().cwd().parent)+"/code_to_analyze/" + url
+    else:
+        absolute_path: str = str(Path().cwd().parent)+"/code_to_analyze"
+    if file:
+        paths.append([absolute_path, file])
+        return paths
+    else:
+        for root, dirs, files in os.walk(absolute_path):
+            for file in files:
+                if file.endswith(".py"):
+                    paths.append([root, file])
+        return paths
 
 def setWilyConfig(path: str):
     config: WilyConfig = load_config()
@@ -62,5 +70,4 @@ def buildWilyDto(data, file_name, path: str):
     return wilyDto
 
 def build(config):
-    print(config.path)
     os.system("cd " + config.path+" && wily clean -y && wily build")
