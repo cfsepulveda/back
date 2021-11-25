@@ -1,4 +1,5 @@
 import os
+
 from pathlib import Path
 
 from back.dto.wili_dto import WilyDto
@@ -11,25 +12,35 @@ from wily.config import WilyConfig
 from wily.config import load as load_config
 from wily.helper.custom_enums import ReportFormat
 
-def generate_report():
+def generate_report(stsddd, scs ):
+    data = getSubfoldersAndFiles()
     json = []
-    for path in getPaths():
-        config: WilyConfig = setWilyConfig(path)
-        build(config,path)
-        file = str(path).split('\\')
-        file_name = file[len(file)-1]
-        json.append(call_report(config, file_name))
+    for index, path in enumerate(data):
+        config: WilyConfig = None
+        config = setWilyConfig(path[0])
+        build(config)
+        json.append(call_report(config, path[1], config.path))
     return json
 
 
+
+def getSubfoldersAndFiles():
+    paths = []
+    absolute_path: str = str(Path().cwd().parent)+"/code_to_analyze"
+    for root, dirs, files in os.walk(absolute_path):
+        for file in files:
+            if file.endswith(".py"):
+                paths.append([root, file])
+    return paths
+
 def setWilyConfig(path: str):
     config: WilyConfig = load_config()
-    full_path = os.path.dirname(path)
-    config.path = str(Path(full_path))
+    config.path = path
     return config
 
-
-def call_report(config, file_name: str):
+def call_report(config:WilyConfig, file_name: str, path: str):
+    print(config)
+    print(file_name)
     new_output = Path().cwd()
     data = report(
         config=config,
@@ -41,30 +52,15 @@ def call_report(config, file_name: str):
         format=ReportFormat.CONSOLE,
         console_format=None,
     )
-    return buildWilyDto(data, file_name)
+    return buildWilyDto(data, file_name, path)
 
 
-def buildWilyDto(data, file_name):
+def buildWilyDto(data, file_name, path: str):
     for element in data:
         wilyDto = WilyDto(
-            file_name, element[4], element[5], element[6], element[7])
+            path,file_name, element[4], element[5], element[6], element[7])
     return wilyDto
 
-
-def getPaths():
-    paths = []
-    absolute_path: str = str(Path().cwd().parent)+"\\code_to_analyze"
-    print(absolute_path)
-    for root, dirs, files in os.walk(absolute_path):
-        for file in files:
-            if file.endswith(".py"):
-                paths.append(os.path.join(root, file))
-                print(os.path.join(root, file))
-    return paths
-
-def build(config, path):
-    print("path")
-    print(path)
-    print("path")
-    clean(config)
-    os.system("cd " + path+" && wily build")
+def build(config):
+    print(config.path)
+    os.system("cd " + config.path+" && wily clean -y && wily build")

@@ -1,5 +1,6 @@
 class WilyDto(object):
-  def __init__(self, file_name, code_line, cyclomatic_complexity, unique_operands, maintainability_index):
+  def __init__(self, path, file_name, code_line, cyclomatic_complexity, unique_operands, maintainability_index):
+    self.path = path
     self.file_name = file_name
     self.code_line = code_line
     self.cyclomatic_complexity = cyclomatic_complexity
