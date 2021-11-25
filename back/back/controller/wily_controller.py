@@ -11,7 +11,10 @@ from back.serializer.cohesion_serializer import CohesionSerializer
 
 @api_view(['POST'])
 def complexity(request):
-    return Response(WilySerializer(generate_report(), many=True).data)
+    body = json.loads(request.body.decode("utf-8"))
+    url = body.get("route")
+    file = body.get("file")
+    return Response(WilySerializer(generate_report(url, file), many=True).data)
 
 @api_view(['POST'])
 def cohesion_analisys(request):
@@ -21,4 +24,4 @@ def cohesion_analisys(request):
     if not file:
         file = ""
     cohesionList = generate_report_cohesion(file+".py",url)
-    return Response(CohesionSerializer(cohesionList,    many=True).data)
+    return Response(CohesionSerializer(cohesionList, many=True).data)
