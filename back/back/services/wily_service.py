@@ -3,9 +3,7 @@ import os
 from pathlib import Path
 
 from back.dto.wili_dto import WilyDto
-from wily.cache import get_default_metrics
 from wily.commands.report import report
-from wily.cache import clean
 
 
 from wily.config import WilyConfig
@@ -47,13 +45,11 @@ def setWilyConfig(path: str):
     return config
 
 def call_report(config:WilyConfig, file_name: str, path: str):
-    print(config)
-    print(file_name)
     new_output = Path().cwd()
     data = report(
         config=config,
         path=file_name,
-        metrics=get_default_metrics(config),
+        metrics=['raw.loc', 'cyclomatic.complexity', 'halstead.h1', 'maintainability.mi'],
         n=100,
         output=new_output,
         include_message=True,
